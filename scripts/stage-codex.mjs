@@ -27,7 +27,11 @@ function commandPath() {
   }[target];
   if (!platformPackage) throw new Error(`Unsupported connector target: ${target}`);
 
-  const npmRoot = execFileSync(process.platform === "win32" ? "npm.cmd" : "npm", ["root", "-g"], { encoding: "utf8" }).trim();
+  const npmRoot = execFileSync(
+    process.platform === "win32" ? "npm.cmd" : "npm",
+    ["root", "-g"],
+    { encoding: "utf8", shell: process.platform === "win32" }
+  ).trim();
   const nativeName = process.platform === "win32" ? "codex.exe" : "codex";
   const nativeCandidate = path.join(
     realpathSync(npmRoot),
