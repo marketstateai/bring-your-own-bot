@@ -27,7 +27,7 @@
   "bundle": {
     "active": true,
     "externalBin": ["binaries/codex"],
-    "icon": ["../ui/marketstate-logo-mark.png"],
+    "icon": ["icons/icon.png", "icons/icon.ico"],
     "macOS": {
       "minimumSystemVersion": "12.0"
     },
