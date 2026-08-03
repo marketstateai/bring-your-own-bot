@@ -1,0 +1,15 @@
+{
+  "name": "bring-your-own-bot",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "stage:codex": "node scripts/stage-codex.mjs",
+    "tauri:dev": "npm run stage:codex && node scripts/run-tauri.mjs dev",
+    "tauri:build": "npm run stage:codex && node scripts/run-tauri.mjs build",
+    "tauri:build:app": "npm run stage:codex && node scripts/run-tauri.mjs build --bundles app"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.10.1"
+  }
+}

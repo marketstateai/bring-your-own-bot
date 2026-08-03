@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarketState Codex Connector</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="brand">
+        <img src="./marketstate-logo-mark.png" alt="" />
+        <div>
+          <p>MarketState</p>
+          <h1>Codex Connector</h1>
+        </div>
+        <span id="overall-status" class="status-chip neutral">Checking</span>
+      </header>
+
+      <section class="panel status-list" aria-label="Connector status">
+        <div class="status-row">
+          <span class="status-dot" id="service-dot"></span>
+          <div>
+            <strong>Local connector</strong>
+            <p id="service-detail">Checking the local service</p>
+          </div>
+        </div>
+        <div class="status-row">
+          <span class="status-dot" id="codex-dot"></span>
+          <div>
+            <strong>Codex</strong>
+            <p id="codex-detail">Looking for Codex</p>
+          </div>
+        </div>
+        <div class="status-row">
+          <span class="status-dot" id="account-dot"></span>
+          <div>
+            <strong>Account</strong>
+            <p id="account-detail">Checking authentication</p>
+          </div>
+        </div>
+        <div class="status-row">
+          <span class="status-dot" id="owner-dot"></span>
+          <div>
+            <strong>MarketState user</strong>
+            <p id="owner-detail">Waiting for Orama to connect</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel controls">
+        <label class="toggle-row" for="autostart">
+          <span>
+            <strong>Start automatically</strong>
+            <small>Keep the connector available after you sign in to this computer.</small>
+          </span>
+          <input id="autostart" type="checkbox" />
+          <span class="toggle" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <p id="message" class="message" aria-live="polite"></p>
+
+      <div class="primary-actions">
+        <button id="connect-button" class="primary" type="button">Connect Codex</button>
+        <button id="test-button" type="button">Test connection</button>
+      </div>
+      <div class="secondary-actions">
+        <button id="restart-button" class="quiet" type="button">Restart connector</button>
+        <button id="install-button" class="quiet" type="button" hidden>Get Codex</button>
+        <button id="unlink-button" class="quiet" type="button" hidden>Unlink user</button>
+        <button id="quit-button" class="quiet" type="button">Quit</button>
+      </div>
+
+      <footer>
+        <span id="endpoint">127.0.0.1:8765</span>
+        <span>Credentials stay on this computer</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+name: Build Bring Your Own Bot
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            artifact_name: MarketState-Codex-Connector-macOS.dmg
+          - os: windows-latest
+            artifact_name: MarketState-Codex-Connector-Windows.msi
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install build tools and Codex
+        shell: bash
+        run: |
+          npm ci
+          npm install --global @openai/codex@latest
+
+      - name: Build macOS connector
+        if: runner.os == 'macOS'
+        shell: bash
+        run: npm run tauri:build:app
+
+      - name: Build Windows connector
+        if: runner.os == 'Windows'
+        shell: bash
+        run: npm run tauri:build
+
+      - name: Select macOS installer
+        if: runner.os == 'macOS'
+        shell: bash
+        run: hdiutil create -volname 'MarketState Codex Connector' -srcfolder 'src-tauri/target/release/bundle/macos/MarketState Codex Connector.app' -ov -format UDZO '${{ matrix.artifact_name }}'
+
+      - name: Select Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Copy-Item (Get-ChildItem 'src-tauri/target/release/bundle/msi/*.msi' | Select-Object -First 1).FullName '${{ matrix.artifact_name }}'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}
+
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: ${{ matrix.artifact_name }}
