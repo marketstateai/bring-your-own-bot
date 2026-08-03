@@ -40,7 +40,10 @@ jobs:
       - name: Build macOS connector
         if: runner.os == 'macOS'
         shell: bash
-        run: npm run tauri:build:app
+        run: |
+          npm run tauri:build:app
+          codesign --force --deep --sign - --timestamp=none 'src-tauri/target/release/bundle/macos/MarketState Codex Connector.app'
+          codesign --verify --deep --strict --verbose=4 'src-tauri/target/release/bundle/macos/MarketState Codex Connector.app'
 
       - name: Build Windows connector
         if: runner.os == 'Windows'
